@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD-SIM</title>
+</head>
+<style>
+body{
+    margin: 0;
+    padding: 0;
+}
+.container{
+   background-image: url(./bg/trang-chu-2-7.jpg);
+    background-color: yellow;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.form{
+    background-color: white;
+    width: 800px;
+    height: 900px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center;
+    justify-content: center; */
+}
+</style>
+
+<body onload="showTable()">
+    <div class="container">
+        <form action="" class="form">
+            <div class="title">
+                <h1>STUDENT INFORMATION MANAGEMENT</h1>
+            </div>
+            <label>Student ID</label>
+            <input type="text" name="" id="sid"><br>
+        
+            <label>Fullname</label>
+            <input type="text" name="" id="fname"><br>
+        
+            <label>Address</label>
+            <input type="text" name="" id="ads"><br>
+        
+            <label>School Year</label>
+            <input type="text" name="" id="scy">
+            <input type="button" value="Add" onclick="addStudent()"><br>
+            
+
+
+            <table border="1" id="studentTable">
+            <tr>
+                <th>P</th>
+            </tr>
+            </table>
+        </form>
+    </div>
+    
+    <script>
+         class Student{
+            constructor (studentid, fullname, address, schoolyear){
+                this.studentid = studentid;
+                this.fullname = fullname;
+                this.address = address;
+                this.schoolyear = schoolyear;
+            }
+        
+            getStudentID(){
+                return this.studentid
+            }
+            getFullname(){
+                return this.fullname
+            }
+            getAddress(){
+                return this.address
+            }
+            getSchoolYear(){
+                return this.schoolyear
+            }
+
+            setStudentID (studentid){
+                this.studentid = studentid;
+            }
+
+            setFullname (fullname){
+                this.fullname = fullname;
+            }
+
+            setAddress (address){
+                this.address = address
+            }
+
+            setSchoolYear (schoolyear){
+                this.schoolyear = schoolyear
+            }
+        }
+
+        var students=[]
+
+        var student= new Student(5,"Nguyen Vu","101 HVT",4)
+        students.push(student)
+
+        console.log(student);
+        console.log(students);
+
+
+        function addStudent(){
+            var id = document.getElementById('sid').value
+            var fullname1 = document.getElementById('fname').value
+            var address1 = document.getElementById('ads').value
+            var schoolyear1 = document.getElementById('scy').value
+
+        student = new Student (id,fullname1,address1,schoolyear1)
+        students.push(student)
+        console.log(students);
+        showTable()
+        }
+
+        function deleteStudent(index){
+            var processConfirm = confirm("Are you sure you want to delete ")
+            if (processConfirm == true){
+            for(var i=index;i<students.length-1;i++){
+                students[i]=students[i+1];
+            }
+            students.pop()
+            console.log(students);
+            }
+            showTable()
+        }
+
+        function saveStudent(index){
+            students[index].setStudentID(document.getElementById('sid1').value)
+            students[index].setFullname(document.getElementById('fname1').value)
+            students[index].setAddress(document.getElementById('ads1').value)
+            students[index].setSchoolYear(document.getElementById('scy1').value)
+            
+            showTable()
+            console.log(students[index]);
+        }
+
+        function editStudent(index){
+
+            var content = ""
+            content += '<tr>'
+            content += '<th>NO</th>'
+            content += '<th>Student ID</th>'
+            content += '<th>Full Name</th>'
+            content += '<th>Address</th>'
+            content += '<th>School Year</th>'
+            content += '<th colspan="2">Action</th>'
+            content += '</tr>'
+            
+            for (var i=0; i<students.length; i++){   
+
+                if (i==index){
+                content += '<tr>'
+                content += '<td>'+ (i + 1) + '</td>'
+                content += '<td>'+ '<input type="text" name="" id="sid1">' + '</td>'
+                content += '<td>'+ '<input type="text" name="" id="fname1">' + '</td>'
+                content += '<td>'+ '<input type="text" name="" id="ads1">' + '</td>'
+                content += '<td>'+ '<input type="text" name="" id="scy1">' + '</td>'
+                content += '<td>'+ '<input type="button" value="Save" onclick="saveStudent('+i+')">' + '</td>'
+                content += '</tr>'
+
+                }
+                else{
+                content += '<tr>'
+                content += '<td>'+ (i + 1) + '</td>'
+                content += '<td>'+ students[i].getStudentID() + '</td>'
+                content += '<td>'+ students[i].getFullname() + '</td>'
+                content += '<td>'+ students[i].getAddress() + '</td>'
+                content += '<td>'+ students[i].getSchoolYear() + '</td>'
+                content += '<td>'+ '<input type="button" value="Edit" onclick="editStudent('+i+')">' + '</td>'
+                content += '<td>'+ '<input type="button" value="Delete" onclick="deleteStudent('+i+')">' + '</td>'
+                content += '</tr>'
+                }
+
+            }
+
+            document.getElementById('studentTable').innerHTML = content ;
+            document.getElementById('sid1').value = students[index].getStudentID() ; 
+            document.getElementById('fname1').value = students[index].getFullname() ;
+            document.getElementById('ads1').value = students[index].getAddress() ;
+            document.getElementById('scy1').value = students[index].getSchoolYear() ;
+        }
+
+        function showTable(){
+
+            var content = ""
+            content += '<tr>'
+            content += '<th>NO</th>'
+            content += '<th>Student ID</th>'
+            content += '<th>Full Name</th>'
+            content += '<th>Address</th>'
+            content += '<th>School Year</th>'
+            content += '<th colspan="2">Action</th>'
+            content += '</tr>'
+
+            for (var i=0; i<students.length; i++){   
+
+            content += '<tr>'
+            content += '<td>'+ (i + 1) + '</td>'
+            content += '<td>'+ students[i].getStudentID() + '</td>'
+            content += '<td>'+ students[i].getFullname() + '</td>'
+            content += '<td>'+ students[i].getAddress() + '</td>'
+            content += '<td>'+ students[i].getSchoolYear() + '</td>'
+            content += '<td>'+ '<input type="button" value="Edit" onclick="editStudent('+i+')">' + '</td>'
+            content += '<td>'+ '<input type="button" value="Delete" onclick="deleteStudent('+i+')">' + '</td>'
+            content += '</tr>'
+
+            }
+
+            document.getElementById('studentTable').innerHTML = content
+            
+        }
+    </script>
+</body>
+
+</html>
